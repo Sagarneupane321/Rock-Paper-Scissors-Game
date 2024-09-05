@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<head>
+  <title>Rock-Paper-Scissors Game</title>
+  <style>
+    body{
+
+    background-color:rgba(50, 50, 50);
+    color: white;
+    font-family: arial;
+    }
+    button{
+      padding: 20px;
+      font-size: 100px;
+      background-color: transparent;
+      border: 3px solid white;
+      border-radius: 90px;
+      margin-right: 20PX;
+      cursor: pointer;
+      margin-bottom: 20px;
+      vertical-align: middle;
+    }
+    .game-title{
+      font-size: 50px;
+      font-weight: 600;
+    }
+    .result{
+      font-size: 40px;
+      margin-left: 20px;
+      font-weight: 600;
+    }
+    .score, .score-count{
+      font-size: 30px;
+      margin-left: 20px;
+      font-weight: 600;
+    }
+    .reset{
+      padding: 40px;
+      font-size: 50px;
+     color: white;
+     vertical-align: middle;
+    }
+    
+  </style>
+</head>
+<body>
+<p class="game-title">Rock Paper Scissors Game</p>
+<button onclick="finalGame('rock')">&#9994;</button>
+<button onclick="finalGame('paper')">&#9995;</button>
+<button onclick="finalGame('scissors')">&#9996;</button>
+<button onclick="score={
+  Win:0,
+  Lose:0,
+  Tie:0
+}; localStorage.removeItem('score')" class="reset">Reset Score</button>
+<p class="result js-result"></p>
+<p class="score js-score"></p>
+<p class="score-count js-score-count"></p>
+  <script>
+ let score=JSON.parse(localStorage.getItem('score'));
+ if(score===null){
+  score={
+    Win:0,
+    Lose:0,
+    Tie:0
+  };
+ }
+ 
+function computerMove(){
+  let computerChoice=Math.random();
+  if(computerChoice>0 && computerChoice<=0.33){
+    return "rock";
+}else if(computerChoice>0.33 && computerChoice<=0.66){
+  return "paper";
+}else if(computerChoice>0.66 && computerChoice<=0.99){
+  return "scissors"
+}
+}
+
+function finalGame(ourmove){
+let computerChoice=computerMove();
+let finalResult='';
+if(ourmove==='rock'){
+    if(computerChoice==='rock'){
+        finalResult='Tie';
+    }else if(computerChoice==='paper'){
+      finalResult='Lose';
+    }else if(computerChoice==='scissors'){
+      finalResult='Win';
+    }
+
+}else if(ourmove==='paper'){
+
+  if(computerChoice==='rock'){
+    finalResult='Win';
+  }else if(computerChoice==='paper'){
+    finalResult='Tie';
+  }else if(computerChoice==='scissors'){
+    finalResult='Lose';
+  }
+}else if(ourmove==='scissors'){
+  if(computerChoice==='rock'){
+    finalResult='Lose';
+}else if(computerChoice==='paper'){
+  finalResult='Win';
+}else if(computerChoice==='scissors'){
+  finalResult='Tie';
+}
+}
+
+if(finalResult==='Win'){
+  score.Win+=1;
+}else if(finalResult==='Lose'){
+  score.Lose+=1;
+}else if(finalResult==='Tie'){
+  score.Tie+=1;
+}
+localStorage.setItem('score', JSON.stringify(score));
+
+document.querySelector('.js-result').innerHTML=finalResult;
+document.querySelector('.js-score').innerHTML=`You Choose: ${ourmove}, Computer Choose: ${computerChoice}`;
+document.querySelector('.js-score-count').innerHTML=`Win: ${score.Win} Lose: ${score.Lose}   Tie: ${score.Tie}`;
+
+}
+  </script>
+</body>
+</html>
